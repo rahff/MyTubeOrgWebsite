@@ -1,6 +1,16 @@
 package fr.myTube.website.core.shared;
 
-public interface EventEmitter {
+import fr.myTube.website.infra.shared.EventHandler;
 
-  <T> void emit(Event<T> event);
+public abstract class EventEmitter<T extends Event> {
+
+  protected EventHandler<T> eventHandler;
+
+  public EventEmitter(EventHandler<T> eventHandler){
+    this.eventHandler = eventHandler;
+  }
+  public void emit(T event){
+    new Thread(() -> this.eventHandler.handle(event)).start();
+  }
+
 }

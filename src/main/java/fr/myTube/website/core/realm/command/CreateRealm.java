@@ -17,6 +17,6 @@ public class CreateRealm {
 
   public void execute(CreateRealmRequest request) {
     realmGateway.save(new Realm(request.vpcId(), request.account()));
-    emailGateway.sendActivationKey(request.account());
+    emailGateway.sendActivationKey(request.account()); // should add key here
   }
 }

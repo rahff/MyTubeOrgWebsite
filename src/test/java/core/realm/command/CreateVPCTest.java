@@ -27,7 +27,7 @@ public class CreateVPCTest extends BaseRealmCommandTest {
   }
 
   @Test
-  void create_realm_from_account_subscription_event(){
+  void create_vpc_from_account_subscription_event(){
     var request = new CreateVPCRequest(accountProvider.get());
     createVPC.execute(request);
     verify(cloudFacade).createVPC("accountId");

@@ -1,17 +1,17 @@
 package fr.myTube.website.core.account.command;
 
-import fr.myTube.website.core.account.event.AccountSubscriptionFailed;
-import fr.myTube.website.core.account.event.AccountSubscriptionValidated;
+import fr.myTube.website.core.account.event.PaymentSubscriptionEvent;
+import fr.myTube.website.core.account.event.PaymentSubscriptionFailed;
+import fr.myTube.website.core.account.event.PaymentSubscriptionValidated;
 import fr.myTube.website.core.account.ports.driven.AccountGateway;
-import fr.myTube.website.core.account.ports.driven.EmailGateway;
 import fr.myTube.website.core.shared.EventEmitter;
 import fr.myTube.website.core.account.ports.driver.CustomerPaymentWebHookNotification;
 
-public class CustomerPaymentWebHook {
-  private final EventEmitter eventBus;
+public class PaymentSubscriptionWebHook {
+  private final EventEmitter<PaymentSubscriptionEvent> eventBus;
   private final AccountGateway accountGateway;
 
-  public CustomerPaymentWebHook(EventEmitter eventBus, AccountGateway accountGateway){
+  public PaymentSubscriptionWebHook(EventEmitter<PaymentSubscriptionEvent> eventBus, AccountGateway accountGateway){
     this.eventBus = eventBus;
     this.accountGateway = accountGateway;
   }
@@ -21,9 +21,9 @@ public class CustomerPaymentWebHook {
     if (webHookNotification.success()){
       account.markSubscriptionAsPaid();
       accountGateway.saveAccount(account);
-      eventBus.emit(new AccountSubscriptionValidated(account));
+      eventBus.emit(new PaymentSubscriptionValidated(account));
     }else {
-      eventBus.emit(new AccountSubscriptionFailed(account));
+      eventBus.emit(new PaymentSubscriptionFailed(account));
     }
   }
 }
